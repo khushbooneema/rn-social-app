@@ -15,7 +15,7 @@ export default function HomeScreen() {
     if (data.error != null) {
         return (
             <ThemedView style={styles.centered}>
-                <ThemedText type="small" themeColor="textSecondary">Couldn&apos;t load posts. Pull down to try again.</ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">Couldn't load posts. Pull down to try again.</ThemedText>
             </ThemedView>
         )
     }
@@ -29,10 +29,7 @@ export default function HomeScreen() {
     }
 
     return (
-        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
-            <ThemedView style={styles.header}>
-                <ThemedText type="subtitle">Insta</ThemedText>
-            </ThemedView>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['bottom']}>
             <FlatList
                 data={data.posts}
                 keyExtractor={(item) => String(item.post_id)}

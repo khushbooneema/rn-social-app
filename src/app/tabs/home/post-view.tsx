@@ -1,11 +1,27 @@
+import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { CURRENT_USER_ID } from "@/constants/current-user";
 import { Spacing } from "@/constants/theme";
 import { FeedPost } from "@/db/types";
+import { useGetLikes } from "@/hooks/use-likes";
 
 export const FeedCard = (post: FeedPost) => {
+    const router = useRouter();
+    const { likes, loading: likesLoading, toggleLike } = useGetLikes(post.post_id);
+
+    const isLiked = likes.some((like) => like.user_id === CURRENT_USER_ID);
+    const likesCount = likesLoading ? post.likes_count : likes.length;
+
+    const handleCommentTap = () => {
+        router.push({
+            pathname: '/tabs/home/comments',
+            params: { postId: String(post.post_id) },
+        });
+    };
+
     return (
         <ThemedView style={styles.card}>
             <Pressable onPress={handleUserInfoTap} style={styles.header}>
@@ -21,17 +37,22 @@ export const FeedCard = (post: FeedPost) => {
             </Pressable>
 
             <View style={styles.actionRow}>
-                <TouchableOpacity onPress={handleLikeToggle} hitSlop={Spacing.two}>
-                    <Image source={require('@/assets/images/post/empty_like.png')} style={styles.icon} />
+                <TouchableOpacity onPress={() => toggleLike(CURRENT_USER_ID)} hitSlop={Spacing.two}>
+                    <Image
+                        source={isLiked
+                            ? require('@/assets/images/post/fill_like.png')
+                            : require('@/assets/images/post/empty_like.png')}
+                        style={styles.icon}
+                    />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleCommentTap} hitSlop={Spacing.two}>
                     <Image source={require('@/assets/images/post/comment.png')} style={styles.icon} />
                 </TouchableOpacity>
             </View>
 
-            {post.likes_count > 0 && (
+            {likesCount > 0 && (
                 <ThemedText type="smallBold" style={styles.section}>
-                    {post.likes_count} {post.likes_count === 1 ? 'like' : 'likes'}
+                    {likesCount} {likesCount === 1 ? 'like' : 'likes'}
                 </ThemedText>
             )}
 
@@ -56,10 +77,6 @@ export const FeedCard = (post: FeedPost) => {
 function handleUserInfoTap() {}
 
 function handleDoubleTap() {}
-
-function handleLikeToggle() {}
-
-function handleCommentTap() {}
 
 const styles = StyleSheet.create({
     card: {

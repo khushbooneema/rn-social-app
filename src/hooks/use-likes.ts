@@ -1,4 +1,4 @@
-import { getLikesByPost } from "@/db/queries/likes";
+import { deleteLike, getLikesByPost, pushLike } from "@/db/queries/likes";
 import { PostLikes } from "@/db/types";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useEffect, useState } from "react";
@@ -27,5 +27,17 @@ export function useGetLikes(post_id: number) {
         fetchLikes();
     }, [fetchLikes]);
 
-    return {likes, loading, error, refetch: fetchLikes};
+    const toggleLike = useCallback(async (userId: number) => {
+        const alreadyLiked = likes.some((like) => like.user_id === userId);
+
+        if (alreadyLiked) {
+            await deleteLike(db, userId, post_id);
+        } else {
+            await pushLike(db, userId, post_id);
+        }
+
+        await fetchLikes();
+    }, [db, post_id, likes, fetchLikes]);
+
+    return {likes, loading, error, refetch: fetchLikes, toggleLike};
 }

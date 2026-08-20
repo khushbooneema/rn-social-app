@@ -40,3 +40,21 @@ export async function getLikesByPost(db:SQLiteDatabase, post_id: number): Promis
 
     return likes
 }
+
+export async function pushLike(db: SQLiteDatabase, user_id: number, post_id: number): Promise<boolean> {
+    const result = await db.runAsync(
+        `INSERT OR IGNORE INTO likes (post_id, user_id) VALUES ($post_id, $user_id)`,
+        { $post_id: post_id, $user_id: user_id }
+    )
+
+    return result.changes > 0
+}
+
+export async function deleteLike(db: SQLiteDatabase, user_id: number, post_id: number): Promise<boolean> {
+    const result = await db.runAsync(
+        `DELETE FROM likes WHERE post_id = $post_id AND user_id = $user_id`,
+        { $post_id: post_id, $user_id: user_id }
+    )
+
+    return result.changes > 0
+}
