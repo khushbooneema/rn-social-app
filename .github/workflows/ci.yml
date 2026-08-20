@@ -1,0 +1,33 @@
+name: React Native CI
+
+on:
+  push:
+    branches: [main, master]
+  pull:
+    branches: [main, master]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+    
+      - name: Install JS Dependencies
+        run: npm ci
+      
+      - name: Run Linter
+        run: npm run lint --if-present
+      
+      - name: Check TypeScript Types
+        run: npx tsc typecheck --if-present
+
+      - name: Run Unit Tests
+        run: npm test -- --watchAll=false
