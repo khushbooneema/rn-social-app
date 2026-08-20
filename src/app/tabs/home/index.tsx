@@ -15,7 +15,7 @@ export default function HomeScreen() {
     if (data.error != null) {
         return (
             <ThemedView style={styles.centered}>
-                <ThemedText type="small" themeColor="textSecondary">Couldn't load posts. Pull down to try again.</ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">Couldnt load posts. Pull down to try again.</ThemedText>
             </ThemedView>
         )
     }

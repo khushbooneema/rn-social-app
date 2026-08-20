@@ -24,6 +24,7 @@ export function useGetComments(post_id: number) {
     }, [db, post_id]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount; the setLoading/setError resets inside fetchComments are no-ops on mount (match initial state)
         fetchComments();
     }, [fetchComments]);
 

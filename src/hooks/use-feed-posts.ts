@@ -24,6 +24,7 @@ export function useFeedPosts() {
     }, [db]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount; the setLoading/setError resets inside fetchPosts are no-ops on mount (match initial state)
         fetchPosts();
     }, [fetchPosts]);
 

@@ -24,6 +24,7 @@ export function useGetLikes(post_id: number) {
     }, [db, post_id]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount; the setLoading/setError resets inside fetchLikes are no-ops on mount (match initial state)
         fetchLikes();
     }, [fetchLikes]);
 
