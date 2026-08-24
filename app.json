@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Insta",
-    "slug": "Insta",
+    "slug": "socialrnapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -38,6 +38,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "49bf19d1-de8e-474f-87f6-90713f35f58d"
+      }
+    },
+    "owner": "khushbooneema"
   }
 }
